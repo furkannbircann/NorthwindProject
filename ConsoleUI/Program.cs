@@ -11,13 +11,32 @@ namespace ConsoleUI
         {
             //ProductGetAllTest();
             //CategoryTest();
+            //ProductDetails();
+
             ProductManager productManager = new ProductManager(new EfProductDal());
-            foreach (var item in productManager.GetProductDetails())
+            var result = productManager.GetProductDetails();
+            if (result.Success==true)
             {
-                Console.WriteLine("{0} / {1} - {2} - {3}" ,item.ProductId, item.ProductName ,item.CategoryName,item.UnitsInStock );
+                foreach (var item in result.Data)
+                {
+                    Console.WriteLine("{0} / {1} - {2} - {3}", item.ProductId, item.ProductName, item.CategoryName, item.UnitsInStock);
+                }
             }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+            
 
+        }
 
+        private static void ProductDetails()
+        {
+            ProductManager productManager = new ProductManager(new EfProductDal());
+            foreach (var item in productManager.GetProductDetails().Data)
+            {
+                Console.WriteLine("{0} / {1} - {2} - {3}", item.ProductId, item.ProductName, item.CategoryName, item.UnitsInStock);
+            }
         }
 
         private static void CategoryTest()
@@ -33,7 +52,7 @@ namespace ConsoleUI
         private static void ProductGetAllTest()
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
-            foreach (var item in productManager.GetAll())
+            foreach (var item in productManager.GetAll().Data)
             {
                 Console.WriteLine(item.ProductID + " Id'li " + item.ProductName);
             }
