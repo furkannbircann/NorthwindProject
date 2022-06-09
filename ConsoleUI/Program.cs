@@ -13,7 +13,7 @@ namespace ConsoleUI
             //CategoryTest();
             //ProductDetails();
 
-            ProductManager productManager = new ProductManager(new EfProductDal());
+            ProductManager productManager = new ProductManager(new EfProductDal(),new CategoryManager(new EfCategoryDal()));
             var result = productManager.GetProductDetails();
             if (result.Success==true)
             {
@@ -32,7 +32,7 @@ namespace ConsoleUI
 
         private static void ProductDetails()
         {
-            ProductManager productManager = new ProductManager(new EfProductDal());
+            ProductManager productManager = new ProductManager(new EfProductDal(),new CategoryManager(new EfCategoryDal()));
             foreach (var item in productManager.GetProductDetails().Data)
             {
                 Console.WriteLine("{0} / {1} - {2} - {3}", item.ProductId, item.ProductName, item.CategoryName, item.UnitsInStock);
@@ -42,16 +42,16 @@ namespace ConsoleUI
         private static void CategoryTest()
         {
             CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
-            foreach (var c in categoryManager.GetAll())
+            foreach (var c in categoryManager.GetAll().Data)
             {
                 Console.WriteLine(c.CategoryName);
             }
-            Console.WriteLine("{0} / 2.category", categoryManager.GetById(2).CategoryName);
+            Console.WriteLine("{0} / 2.category", categoryManager.GetById(2).Data.CategoryName);
         }
 
         private static void ProductGetAllTest()
         {
-            ProductManager productManager = new ProductManager(new EfProductDal());
+            ProductManager productManager = new ProductManager(new EfProductDal(),new CategoryManager(new EfCategoryDal()));
             foreach (var item in productManager.GetAll().Data)
             {
                 Console.WriteLine(item.ProductID + " Id'li " + item.ProductName);
