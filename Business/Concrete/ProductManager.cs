@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -22,16 +23,17 @@ namespace Business.Concrete
         IProductDal _productDal;
         ICategoryService _categoryService;
 
-        public ProductManager(IProductDal productDal,ICategoryService categoryService)
+        public ProductManager(IProductDal productDal, ICategoryService categoryService)
         {
             _productDal = productDal;
             _categoryService = categoryService;
         }
+        [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            IResult result = BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.CategoryID), CheckIfProductNameExists(product.ProductName),CheckIfCategoryLimitExceded());
-            if (result!=null)
+            IResult result = BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.CategoryID), CheckIfProductNameExists(product.ProductName), CheckIfCategoryLimitExceded());
+            if (result != null)
             {
                 return result;
             }
@@ -41,7 +43,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Product>> GetAll()
         {
-            if (DateTime.Now.Hour >= 18 && DateTime.Now.Hour <= 22)
+            if (DateTime.Now.Hour >= 11 && DateTime.Now.Hour <= 12)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
@@ -68,6 +70,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
 
         }
+
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(Product product)
         {
@@ -89,7 +92,7 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.ProductNameAlreadyExists);
             }
-            return new SuccessResult(); 
+            return new SuccessResult();
         }
         private IResult CheckIfCategoryLimitExceded()
         {
