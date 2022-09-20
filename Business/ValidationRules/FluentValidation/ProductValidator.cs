@@ -18,12 +18,12 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(p => p.UnitPrice).GreaterThan(0);
             RuleFor(p => p.UnitPrice).GreaterThanOrEqualTo(0).When(p => p.CategoryID == 1);
 
-            RuleFor(p => p.ProductName).Must(StartWithF).WithMessage("Ürünler F harfi ile başlamalı ! ");
+            //RuleFor(p => p.ProductName).Must(StartWithF).WithMessage("Ürünler F harfi ile başlamalı ! ");
         }
 
-        private bool StartWithF(string arg)
-        {
-            return arg.StartsWith("F");
-        }
+        //private bool StartWithF(string arg)
+        //{
+        //    return arg.StartsWith("F");
+        //}
     }
 }
