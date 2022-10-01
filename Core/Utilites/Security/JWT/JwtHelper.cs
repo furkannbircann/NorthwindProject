@@ -15,7 +15,7 @@ namespace Core.Utilites.Security.JWT
 {
     public class JwtHelper : ITokenHelper
     {
-        public IConfiguration Configuration { get; } //ASP.NET WEB API içerisinde bulunan appsettings.json dosyasını okumak
+        private IConfiguration Configuration { get; } //ASP.NET WEB API içerisinde bulunan appsettings.json dosyasını okumak
         private TokenOptions _tokenOptions;
         private DateTime _accessTokenExpiration;
         public JwtHelper(IConfiguration configuration)
