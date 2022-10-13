@@ -48,13 +48,9 @@ namespace Business.Concrete
         [PerformanceAspect(5)]
         public IDataResult<List<Product>> GetAll()
         {
-            if (DateTime.Now.Hour >= 11 && DateTime.Now.Hour <= 12)
-            {
-                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
-            }
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);
         }
-
+          
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryID == id));
